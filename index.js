@@ -22,9 +22,15 @@ goBackSearch ();
 
 function goBackListener() {
   $('.js-go-back-button').click(function() {
-    location.reload();
+    $('.js-state').empty();
+    $('.js-city').empty();
+    $('.js-genre').empty();
+    document.getElementById("h2").attr('hidden');
+    $('.js-search-result').prop('hidden', true);
+
   });
 }
+
 goBackListener();
 
 function selectCity() {
@@ -365,7 +371,6 @@ function watchSubmit() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
     document.getElementById("h1").style.fontSize = "30px";
-    $('.js-search-form').remove();
     document.getElementById("h2").style.visibility = "visible";
     const queryTarget = $(event.currentTarget).find('.js-query');
     const query = queryTarget.val();
