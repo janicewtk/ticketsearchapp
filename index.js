@@ -24,14 +24,16 @@ function goBackListener() {
   $('.js-go-back-button').click(function() {
     $('.js-state').empty();
     $('.js-city').empty();
-    $('.js-genre').empty();
-    document.getElementById("h2").attr('hidden');
-    $('.js-search-result').prop('hidden', true);
+    $('.js-genre').val("");
+    $('#h2').prop('hidden', true);;
+    $('.js-search-results').prop('hidden', true);
 
   });
 }
 
 goBackListener();
+selectCity();
+
 
 function selectCity() {
   if($('#State :selected').val() == 'AL' ) {
@@ -346,6 +348,7 @@ function getDataFromApi(searchTerm, callback) {
 
 function renderResult(result) {
   return`
+    <div class="col-4">
     <div class="card">
       <div class="name">${result.name}</div>
       <div class="location">${result._embedded.venues[0].city.name} ${result._embedded.venues[0].country.countryCode}</div>
@@ -365,19 +368,19 @@ function displayTicketMasterSearchData(data) {
 }
 
 
-
 function watchSubmit() {
-  
   $('.js-search-form').submit(event => {
-    event.preventDefault();
-    document.getElementById("h1").style.fontSize = "30px";
-    document.getElementById("h2").style.visibility = "visible";
-    const queryTarget = $(event.currentTarget).find('.js-query');
-    const query = queryTarget.val();
-    queryTarget.val("");
-    $('.js-search-result').prop('hidden', false);
-    getDataFromApi(query, displayTicketMasterSearchData);
-  });
-}
+      event.preventDefault();
+      if ($('.js-city').val() != 'undefined' && $('.js-city').val()) {
+        document.getElementById("h1").style.fontSize = "30px";
+        document.getElementById("h2").style.visibility = "visible";
+        const queryTarget = $(event.currentTarget).find('.js-query');
+        const query = queryTarget.val();
+        queryTarget.val("");
+        $('.js-search-result').prop('hidden', false);
+        getDataFromApi(query, displayTicketMasterSearchData);
+      } else { alert("You must select a city.")};
+    });
+  }
 
 $(watchSubmit);
